@@ -29,9 +29,9 @@ func (a *App) Initialize(cfg *config.Config) {
 	if err := db.MigrateDB(a.db); err != nil {
 		panic(err)
 	}
-	repository := posgrest.New[entities.Metadata](a.db)
-	gateway := metadataGateway.New("https://api.ssllabs.com/api/v3/analyze")
-	ctrl := metadata.New(repository, gateway)
+	repository := posgrest.New[entities.Metadata](a.db, a.config.DB.RELATIONS)
+	gateway := metadataGateway.New(a.config.GATEWAY.URL)
+	ctrl := metadata.New(repository, gateway, a.config.APP.RETRIES)
 	handler := grpcHandler.New(ctrl)
 	lis, err := net.Listen("tcp", "localhost:8081")
 	if err != nil {

@@ -42,7 +42,13 @@ func (r *repository[T]) GetByID(ctx context.Context, id uint) (*T, error) {
 
 func (r *repository[T]) GetBy(ctx context.Context, key string, value interface{}) (*[]T, error) {
 	var entity []T
-	if err := r.db.WithContext(ctx).Preload(r.relations).Where(key, value).Find(&entity).Error; err != nil {
+	if r.relations == "" {
+		if err := r.db.WithContext(ctx).Where(key, value).Find(&entity).Error; err != nil {
+			return nil, err
+		}
+		return &entity, nil
+	}
+	if err := r.db.WithContext(ctx).Preload("Location").Preload("Location.Country").Where(key, value).Find(&entity).Error; err != nil {
 		return nil, err
 	}
 	return &entity, nil

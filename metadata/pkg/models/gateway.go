@@ -1,6 +1,8 @@
 package models
 
-import "github.com/jeffleon1/club_hub/metadata/pkg/entities"
+import (
+	"github.com/jeffleon1/club_hub/metadata/pkg/entities"
+)
 
 type WebDomainDetails struct {
 	Host            string     `json:"host"`
@@ -21,7 +23,7 @@ type Endpoint struct {
 	Delegation    int64  `json:"delegation"`
 }
 
-func (w *WebDomainDetails) ToMetadata() *entities.Metadata {
+func (w *WebDomainDetails) ToMetadata(franchiseID, companyID uint32) *entities.Metadata {
 	var endpoints []entities.Endpoint
 	for _, endpoint := range w.Endpoints {
 		endpoints = append(endpoints, entities.Endpoint{
@@ -34,6 +36,7 @@ func (w *WebDomainDetails) ToMetadata() *entities.Metadata {
 		Protocol:     entities.ProtocolType(w.Protocol),
 		Availability: w.Status,
 		Endpoints:    endpoints,
-		FranchiseID:  0,
+		FranchiseID:  uint(franchiseID),
+		CompanyID:    uint(companyID),
 	}
 }

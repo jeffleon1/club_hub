@@ -15,6 +15,7 @@ type Metadata struct {
 	Availability string       `json:"availability"`
 	Endpoints    []Endpoint   `json:"endpoints" gorm:"foreignKey:MetadataID"`
 	FranchiseID  uint         `json:"franchise_id"`
+	CompanyID    uint         `json:"company_id"`
 }
 
 type Endpoint struct {
