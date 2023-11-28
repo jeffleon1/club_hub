@@ -28,6 +28,12 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MetadataServiceClient interface {
+	// Login
+	//
+	// {{.MethodDescriptorProto.Name}} is a call with the method(s) {{$first := true}}{{range .Bindings}}{{if $first}}{{$first = false}}{{else}}, {{end}}{{.HTTPMethod}}{{end}} within the "{{.Service.Name}}" service.
+	// It takes in "{{.RequestType.Name}}" and returns a "{{.ResponseType.Name}}".
+	//
+	// {{import "tables.md"}}
 	GetMetadata(ctx context.Context, in *GetMetadataRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error)
 	GetMetadataByFilter(ctx context.Context, in *GetMetadataByFilterRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error)
 	CreateMetadata(ctx context.Context, in *CreateMetadataRequest, opts ...grpc.CallOption) (*CreateMetadataResponse, error)
@@ -72,6 +78,12 @@ func (c *metadataServiceClient) CreateMetadata(ctx context.Context, in *CreateMe
 // All implementations must embed UnimplementedMetadataServiceServer
 // for forward compatibility
 type MetadataServiceServer interface {
+	// Login
+	//
+	// {{.MethodDescriptorProto.Name}} is a call with the method(s) {{$first := true}}{{range .Bindings}}{{if $first}}{{$first = false}}{{else}}, {{end}}{{.HTTPMethod}}{{end}} within the "{{.Service.Name}}" service.
+	// It takes in "{{.RequestType.Name}}" and returns a "{{.ResponseType.Name}}".
+	//
+	// {{import "tables.md"}}
 	GetMetadata(context.Context, *GetMetadataRequest) (*GetMetadataResponse, error)
 	GetMetadataByFilter(context.Context, *GetMetadataByFilterRequest) (*GetMetadataResponse, error)
 	CreateMetadata(context.Context, *CreateMetadataRequest) (*CreateMetadataResponse, error)
