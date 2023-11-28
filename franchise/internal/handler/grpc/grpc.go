@@ -9,7 +9,6 @@ import (
 	"github.com/jeffleon1/club_hub/franchise/internal/controller/franchise"
 	entityFranchise "github.com/jeffleon1/club_hub/franchise/pkg/entities"
 	"github.com/jeffleon1/club_hub/gen"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -87,9 +86,7 @@ func (h *Handler) UpdateFranchise(ctx context.Context, req *gen.UpdateFranchiseR
 	if req == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
 	}
-	logrus.Infof("Start Update")
 	entity := entityFranchise.FranchiseFromProtoUpdate(req.Franchise)
-	logrus.Infof("Continue")
 	if err := h.ctrl.Update(ctx, entity, uint(req.Id)); err != nil {
 		return nil, status.Errorf(codes.Unavailable, err.Error())
 	}
