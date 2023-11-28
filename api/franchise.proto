@@ -1,6 +1,7 @@
 syntax = "proto3";
 option go_package = "/gen";
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
 
 
 message Franchise {
@@ -89,15 +90,42 @@ message UpdateFranchiseRequest {
 }
 
 service MetadataService {
-    rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse);
+    rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse) {
+        option (google.api.http) = {
+            get: "/v1/metadata"
+        };
+    }
     rpc GetMetadataByFilter(GetMetadataByFilterRequest) returns (GetMetadataResponse);
-    rpc CreateMetadata(CreateMetadataRequest) returns (CreateMetadataResponse);
+    rpc CreateMetadata(CreateMetadataRequest) returns (CreateMetadataResponse) {
+        option (google.api.http) = {
+            post: "/v1/metadata"
+            body: "*"
+        };
+    }
 }
 
 
 service FranchiseService {
-    rpc GetFranchise(GetFranchiseRequest) returns (GetFranchiseResponse);
-    rpc GetFranchiseByFilter(GetFranchiseByFilterRequest) returns (GetFranchiseResponse);
-    rpc CreateFranchise(CreateFranchiseRequest) returns (CreateFranchiseResponse);
-    rpc UpdateFranchise(UpdateFranchiseRequest) returns (UpdateFranchiseResponse);
+    rpc GetFranchise(GetFranchiseRequest) returns (GetFranchiseResponse){
+        option (google.api.http) = {
+            get: "/v1/franchise"
+        };
+    }
+    rpc GetFranchiseByFilter(GetFranchiseByFilterRequest) returns (GetFranchiseResponse){
+        option (google.api.http) = {
+            get: "/v1/franchise/filter"
+        };
+    }
+    rpc CreateFranchise(CreateFranchiseRequest) returns (CreateFranchiseResponse) {
+        option (google.api.http) = {
+            post: "/v1/franchises"
+            body: "*" 
+        };
+    }
+    rpc UpdateFranchise(UpdateFranchiseRequest) returns (UpdateFranchiseResponse)  {
+        option (google.api.http) = {
+            put: "/v1/franchise/{id}"
+            body: "*"
+        };
+    }
 }
