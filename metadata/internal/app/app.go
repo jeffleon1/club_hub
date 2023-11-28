@@ -38,7 +38,7 @@ func (a *App) Initialize(cfg *config.Config) {
 	gateway := metadataGateway.New(a.config.GATEWAY.URL)
 	ctrl := metadata.New(repository, gateway, a.config.APP.RETRIES)
 	handler := grpcHandler.New(ctrl)
-	lis, err := net.Listen("tcp", "localhost:8081")
+	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -52,7 +52,7 @@ func (a *App) Initialize(cfg *config.Config) {
 		}
 	}()
 
-	conn, err := grpc.Dial("localhost:8081", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(":8081", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln("Failed to dial server:", err)
 	}

@@ -40,7 +40,7 @@ func (a *App) Initialize(cfg *config.Config) {
 	gateway := grpcGateway.New(a.config.GATEWAY.HOST, a.config.GATEWAY.PORT)
 	ctrl := franchise.New(franchiseRepository, countryRepository, gateway, a.config.APP.RETRIES)
 	handler := grpcHandler.New(ctrl)
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", a.config.APP.PORT))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", a.config.APP.PORT))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -54,7 +54,7 @@ func (a *App) Initialize(cfg *config.Config) {
 		}
 	}()
 
-	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(":8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalln("Failed to dial server:", err)
 	}
