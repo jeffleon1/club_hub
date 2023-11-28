@@ -1,0 +1,418 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "franchise.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "MetadataService"
+    },
+    {
+      "name": "FranchiseService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/franchise": {
+      "get": {
+        "operationId": "FranchiseService_GetFranchise",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetFranchiseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FranchiseService"
+        ]
+      }
+    },
+    "/v1/franchise/filter": {
+      "get": {
+        "operationId": "FranchiseService_GetFranchiseByFilter",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetFranchiseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "key",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "FranchiseService"
+        ]
+      }
+    },
+    "/v1/franchise/{id}": {
+      "put": {
+        "operationId": "FranchiseService_UpdateFranchise",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UpdateFranchiseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "franchise": {
+                  "$ref": "#/definitions/Franchise"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "FranchiseService"
+        ]
+      }
+    },
+    "/v1/franchises": {
+      "post": {
+        "operationId": "FranchiseService_CreateFranchise",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateFranchiseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateFranchiseRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FranchiseService"
+        ]
+      }
+    },
+    "/v1/metadata": {
+      "get": {
+        "summary": "Login",
+        "description": "GetMetadata is a call with the method(s) GET within the \"MetadataService\" service.\nIt takes in \"GetMetadataRequest\" and returns a \"GetMetadataResponse\".\n\nopen tables.md: no such file or directory",
+        "operationId": "MetadataService_GetMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetMetadataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "MetadataService"
+        ]
+      },
+      "post": {
+        "operationId": "MetadataService_CreateMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateMetadataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateMetadataRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MetadataService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Country": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateFranchiseRequest": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateFranchiseResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "CreateMetadataRequest": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "string"
+        },
+        "franchiseId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "companyId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "CreateMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "Endpoint": {
+      "type": "object",
+      "properties": {
+        "serverName": {
+          "type": "string"
+        },
+        "ipAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "Franchise": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "createDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/definitions/Location"
+        },
+        "companyId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        }
+      }
+    },
+    "GetFranchiseResponse": {
+      "type": "object",
+      "properties": {
+        "franchise": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Franchise"
+          }
+        }
+      }
+    },
+    "GetMetadataResponse": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Metadata"
+          }
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "country": {
+          "$ref": "#/definitions/Country"
+        }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "protocol": {
+          "type": "string"
+        },
+        "availability": {
+          "type": "string"
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/Endpoint"
+          }
+        },
+        "franchiseId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "UpdateFranchiseResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}
