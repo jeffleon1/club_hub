@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MetadataService_GetMetadata_FullMethodName    = "/MetadataService/GetMetadata"
-	MetadataService_CreateMetadata_FullMethodName = "/MetadataService/CreateMetadata"
+	MetadataService_GetMetadata_FullMethodName         = "/MetadataService/GetMetadata"
+	MetadataService_GetMetadataByFilter_FullMethodName = "/MetadataService/GetMetadataByFilter"
+	MetadataService_CreateMetadata_FullMethodName      = "/MetadataService/CreateMetadata"
 )
 
 // MetadataServiceClient is the client API for MetadataService service.
@@ -28,6 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MetadataServiceClient interface {
 	GetMetadata(ctx context.Context, in *GetMetadataRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error)
+	GetMetadataByFilter(ctx context.Context, in *GetMetadataByFilterRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error)
 	CreateMetadata(ctx context.Context, in *CreateMetadataRequest, opts ...grpc.CallOption) (*CreateMetadataResponse, error)
 }
 
@@ -48,6 +50,15 @@ func (c *metadataServiceClient) GetMetadata(ctx context.Context, in *GetMetadata
 	return out, nil
 }
 
+func (c *metadataServiceClient) GetMetadataByFilter(ctx context.Context, in *GetMetadataByFilterRequest, opts ...grpc.CallOption) (*GetMetadataResponse, error) {
+	out := new(GetMetadataResponse)
+	err := c.cc.Invoke(ctx, MetadataService_GetMetadataByFilter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *metadataServiceClient) CreateMetadata(ctx context.Context, in *CreateMetadataRequest, opts ...grpc.CallOption) (*CreateMetadataResponse, error) {
 	out := new(CreateMetadataResponse)
 	err := c.cc.Invoke(ctx, MetadataService_CreateMetadata_FullMethodName, in, out, opts...)
@@ -62,6 +73,7 @@ func (c *metadataServiceClient) CreateMetadata(ctx context.Context, in *CreateMe
 // for forward compatibility
 type MetadataServiceServer interface {
 	GetMetadata(context.Context, *GetMetadataRequest) (*GetMetadataResponse, error)
+	GetMetadataByFilter(context.Context, *GetMetadataByFilterRequest) (*GetMetadataResponse, error)
 	CreateMetadata(context.Context, *CreateMetadataRequest) (*CreateMetadataResponse, error)
 	mustEmbedUnimplementedMetadataServiceServer()
 }
@@ -72,6 +84,9 @@ type UnimplementedMetadataServiceServer struct {
 
 func (UnimplementedMetadataServiceServer) GetMetadata(context.Context, *GetMetadataRequest) (*GetMetadataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMetadata not implemented")
+}
+func (UnimplementedMetadataServiceServer) GetMetadataByFilter(context.Context, *GetMetadataByFilterRequest) (*GetMetadataResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMetadataByFilter not implemented")
 }
 func (UnimplementedMetadataServiceServer) CreateMetadata(context.Context, *CreateMetadataRequest) (*CreateMetadataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMetadata not implemented")
@@ -107,6 +122,24 @@ func _MetadataService_GetMetadata_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MetadataService_GetMetadataByFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMetadataByFilterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MetadataServiceServer).GetMetadataByFilter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MetadataService_GetMetadataByFilter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MetadataServiceServer).GetMetadataByFilter(ctx, req.(*GetMetadataByFilterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _MetadataService_CreateMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateMetadataRequest)
 	if err := dec(in); err != nil {
@@ -137,6 +170,10 @@ var MetadataService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MetadataService_GetMetadata_Handler,
 		},
 		{
+			MethodName: "GetMetadataByFilter",
+			Handler:    _MetadataService_GetMetadataByFilter_Handler,
+		},
+		{
 			MethodName: "CreateMetadata",
 			Handler:    _MetadataService_CreateMetadata_Handler,
 		},
@@ -146,8 +183,9 @@ var MetadataService_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	FranchiseService_GetFranchise_FullMethodName    = "/FranchiseService/GetFranchise"
-	FranchiseService_CreateFranchise_FullMethodName = "/FranchiseService/CreateFranchise"
+	FranchiseService_GetFranchise_FullMethodName         = "/FranchiseService/GetFranchise"
+	FranchiseService_GetFranchiseByFilter_FullMethodName = "/FranchiseService/GetFranchiseByFilter"
+	FranchiseService_CreateFranchise_FullMethodName      = "/FranchiseService/CreateFranchise"
 )
 
 // FranchiseServiceClient is the client API for FranchiseService service.
@@ -155,6 +193,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FranchiseServiceClient interface {
 	GetFranchise(ctx context.Context, in *GetFranchiseRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error)
+	GetFranchiseByFilter(ctx context.Context, in *GetFranchiseByFilterRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error)
 	CreateFranchise(ctx context.Context, in *CreateFranchiseRequest, opts ...grpc.CallOption) (*CreateFranchiseResponse, error)
 }
 
@@ -175,6 +214,15 @@ func (c *franchiseServiceClient) GetFranchise(ctx context.Context, in *GetFranch
 	return out, nil
 }
 
+func (c *franchiseServiceClient) GetFranchiseByFilter(ctx context.Context, in *GetFranchiseByFilterRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error) {
+	out := new(GetFranchiseResponse)
+	err := c.cc.Invoke(ctx, FranchiseService_GetFranchiseByFilter_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *franchiseServiceClient) CreateFranchise(ctx context.Context, in *CreateFranchiseRequest, opts ...grpc.CallOption) (*CreateFranchiseResponse, error) {
 	out := new(CreateFranchiseResponse)
 	err := c.cc.Invoke(ctx, FranchiseService_CreateFranchise_FullMethodName, in, out, opts...)
@@ -189,6 +237,7 @@ func (c *franchiseServiceClient) CreateFranchise(ctx context.Context, in *Create
 // for forward compatibility
 type FranchiseServiceServer interface {
 	GetFranchise(context.Context, *GetFranchiseRequest) (*GetFranchiseResponse, error)
+	GetFranchiseByFilter(context.Context, *GetFranchiseByFilterRequest) (*GetFranchiseResponse, error)
 	CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error)
 	mustEmbedUnimplementedFranchiseServiceServer()
 }
@@ -199,6 +248,9 @@ type UnimplementedFranchiseServiceServer struct {
 
 func (UnimplementedFranchiseServiceServer) GetFranchise(context.Context, *GetFranchiseRequest) (*GetFranchiseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFranchise not implemented")
+}
+func (UnimplementedFranchiseServiceServer) GetFranchiseByFilter(context.Context, *GetFranchiseByFilterRequest) (*GetFranchiseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFranchiseByFilter not implemented")
 }
 func (UnimplementedFranchiseServiceServer) CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFranchise not implemented")
@@ -234,6 +286,24 @@ func _FranchiseService_GetFranchise_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FranchiseService_GetFranchiseByFilter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFranchiseByFilterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FranchiseServiceServer).GetFranchiseByFilter(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FranchiseService_GetFranchiseByFilter_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FranchiseServiceServer).GetFranchiseByFilter(ctx, req.(*GetFranchiseByFilterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FranchiseService_CreateFranchise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateFranchiseRequest)
 	if err := dec(in); err != nil {
@@ -262,6 +332,10 @@ var FranchiseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFranchise",
 			Handler:    _FranchiseService_GetFranchise_Handler,
+		},
+		{
+			MethodName: "GetFranchiseByFilter",
+			Handler:    _FranchiseService_GetFranchiseByFilter_Handler,
 		},
 		{
 			MethodName: "CreateFranchise",

@@ -43,6 +43,32 @@ func (g *Gateway) Get(ctx context.Context, companyID uint32) ([]*entities.Metada
 	return entityMetadata, nil
 }
 
+func (g *Gateway) GetBy(ctx context.Context, key string, value uint32) ([]*entities.Metadata, error) {
+	conn, err := ServiceConnection(ctx, g.host, g.port)
+	if err != nil {
+		logrus.Errorf("Error establishing connection with host=%s:%s error=%s", g.host, g.port, err.Error())
+		return nil, err
+	}
+	defer conn.Close()
+	client := gen.NewMetadataServiceClient(conn)
+	logrus.Infof("Sending GetMetadataByFilter key=%s value=%s", key, value)
+	if err != nil {
+		logrus.Errorf("Error GetMetadata key=%s value=%s %s", key, value, err.Error())
+		return nil, err
+	}
+	resp, err := client.GetMetadataByFilter(ctx, &gen.GetMetadataByFilterRequest{Key: key, Value: value})
+	if err != nil {
+		logrus.Errorf("Error GetMetadata key=%s value=%s %s", key, value, err.Error())
+		return nil, err
+	}
+	var entityMetadata []*entities.Metadata
+
+	for _, metadata := range resp.Metadata {
+		entityMetadata = append(entityMetadata, entities.MetadataFromProto(metadata))
+	}
+	return entityMetadata, nil
+}
+
 func (g *Gateway) Create(ctx context.Context, host string, franchiseID, companyID uint32) error {
 	conn, err := ServiceConnection(ctx, g.host, g.port)
 	if err != nil {

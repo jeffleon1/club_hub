@@ -39,6 +39,25 @@ func (h *Handler) GetMetadata(ctx context.Context, req *gen.GetMetadataRequest) 
 	return &gen.GetMetadataResponse{Metadata: genMetadata}, nil
 }
 
+func (h *Handler) GetMetadataByFilter(ctx context.Context, req *gen.GetMetadataByFilterRequest) (*gen.GetMetadataResponse, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
+	}
+	m, err := h.ctrl.GetBy(ctx, req.Key, req.Value)
+	if err != nil && errors.Is(err, metadata.ErrNotFound) {
+		return nil, status.Errorf(codes.NotFound, err.Error())
+	} else if err != nil {
+		return nil, status.Errorf(codes.Internal, err.Error())
+	}
+	var genMetadata []*gen.Metadata
+
+	for _, metadata := range *m {
+		genMetadata = append(genMetadata, entities.MetadataToProto(&metadata))
+	}
+
+	return &gen.GetMetadataResponse{Metadata: genMetadata}, nil
+}
+
 func (h *Handler) CreateMetadata(ctx context.Context, req *gen.CreateMetadataRequest) (*gen.CreateMetadataResponse, error) {
 	if req == nil || req.Host == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
