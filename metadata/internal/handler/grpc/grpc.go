@@ -3,7 +3,6 @@ package grpc
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/jeffleon1/club_hub/gen"
 	"github.com/jeffleon1/club_hub/metadata/internal/controller/metadata"
@@ -25,13 +24,12 @@ func (h *Handler) GetMetadata(ctx context.Context, req *gen.GetMetadataRequest) 
 	if req == nil {
 		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
 	}
-	m, err := h.ctrl.Get(ctx, uint(req.FranchiseId))
+	m, err := h.ctrl.Get(ctx, uint(req.CompanyId))
 	if err != nil && errors.Is(err, metadata.ErrNotFound) {
 		return nil, status.Errorf(codes.NotFound, err.Error())
 	} else if err != nil {
 		return nil, status.Errorf(codes.Internal, err.Error())
 	}
-	fmt.Println(m)
 	var genMetadata []*gen.Metadata
 
 	for _, metadata := range *m {
@@ -45,7 +43,7 @@ func (h *Handler) CreateMetadata(ctx context.Context, req *gen.CreateMetadataReq
 	if req == nil || req.Host == "" {
 		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
 	}
-	if err := h.ctrl.Create(ctx, req.Host); err != nil {
+	if err := h.ctrl.Create(ctx, req.Host, req.FranchiseId, req.CompanyId); err != nil {
 		return nil, status.Errorf(codes.Unavailable, err.Error())
 	}
 	return &gen.CreateMetadataResponse{Error: ""}, nil

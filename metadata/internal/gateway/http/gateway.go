@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/jeffleon1/club_hub/metadata/internal/gateway"
 	"github.com/jeffleon1/club_hub/metadata/pkg/models"
+	"github.com/sirupsen/logrus"
 )
 
 type Gateway struct {
@@ -21,7 +21,7 @@ func New(BaseURL string) *Gateway {
 
 func (g *Gateway) Get(ctx context.Context, host string) (*models.WebDomainDetails, error) {
 	url := g.BaseURL
-	log.Printf("Calling service. Request: GET %s", url)
+	logrus.Infof("Calling service. Request: GET %s", url)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err

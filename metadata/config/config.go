@@ -30,18 +30,25 @@ func (c *Config) ConnectionString() string {
 type Config struct {
 	APP
 	DB
+	GATEWAY
 }
 
 type DB struct {
-	HOST     string `env:"DB_HOST" envDefault:"localhost"`
-	USER     string `env:"DB_USER" envDefault:"club_hub"`
-	PASSWORD string `env:"DB_PASSWORD" envDefault:""`
-	DBNAME   string `env:"DB_NAME" envDefault:"club_hub"`
-	PORT     string `env:"DB_PORT" envDefault:"3306"`
-	SSLMODE  string `env:"DB_SSL_MODE" envDefault:"disable"`
-	TIMEZONE string `env:"DB_TIME_ZONE"  envDefault:"America/Bogota"`
+	HOST      string `env:"DB_HOST" envDefault:"localhost"`
+	USER      string `env:"DB_USER" envDefault:"club_hub"`
+	PASSWORD  string `env:"DB_PASSWORD" envDefault:""`
+	DBNAME    string `env:"DB_NAME" envDefault:"club_hub"`
+	PORT      string `env:"DB_PORT" envDefault:"3306"`
+	SSLMODE   string `env:"DB_SSL_MODE" envDefault:"disable"`
+	TIMEZONE  string `env:"DB_TIME_ZONE"  envDefault:"America/Bogota"`
+	RELATIONS string `env:"DB_RELATIONS"  envDefault:""`
 }
 
 type APP struct {
-	PORT string `env:"APP_PORT" envDefault:"8080"`
+	PORT    string `env:"APP_PORT" envDefault:"8080"`
+	RETRIES int    `env:"APP_REQUEST_RETRIES" envDefault:"4"`
+}
+
+type GATEWAY struct {
+	URL string `env:"GATEWAY_URL" envDefault:""`
 }

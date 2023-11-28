@@ -1,5 +1,44 @@
 syntax = "proto3";
 option go_package = "/gen";
+import "google/protobuf/timestamp.proto";
+
+
+message Franchise {
+  string url = 1;
+  google.protobuf.Timestamp create_date = 2;
+  google.protobuf.Timestamp expires_date = 3;
+  string name = 4;
+  string email = 5;
+  Location location = 6;
+  uint32 company_id = 7;
+  Metadata metadata = 8;
+}
+
+message Location {
+    string city = 1;
+    string address = 2;
+    Country country = 3;
+}
+  
+message Country {
+    string name = 1;
+}
+
+message CreateFranchiseRequest {
+    string host = 1;
+}
+
+message CreateFranchiseResponse {
+    string error = 1;
+}
+
+message GetFranchiseRequest {
+    uint32 company_id = 1;
+}
+
+message GetFranchiseResponse {
+    repeated Franchise franchise = 1;
+}
 
 message Endpoint {
     string server_name = 1;
@@ -13,13 +52,10 @@ message Metadata {
     uint32 franchise_id = 4;
 }
 
-message MovieDetails {
-    float rating = 1;
-    Metadata metadata = 2;
-}
-
 message CreateMetadataRequest {
     string host = 1;
+    uint32 franchise_id = 2;
+    uint32 company_id = 3;
 }
 
 message CreateMetadataResponse {
@@ -27,7 +63,7 @@ message CreateMetadataResponse {
 }
 
 message GetMetadataRequest {
-    uint32 franchise_id = 1;
+    uint32 company_id = 1;
 }
 
 message GetMetadataResponse {
@@ -37,4 +73,10 @@ message GetMetadataResponse {
 service MetadataService {
     rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse);
     rpc CreateMetadata(CreateMetadataRequest) returns (CreateMetadataResponse);
+}
+
+
+service FranchiseService {
+    rpc GetFranchise(GetFranchiseRequest) returns (GetFranchiseResponse);
+    rpc CreateFranchise(CreateFranchiseRequest) returns (CreateFranchiseResponse);
 }

@@ -144,3 +144,130 @@ var MetadataService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "franchise.proto",
 }
+
+const (
+	FranchiseService_GetFranchise_FullMethodName    = "/FranchiseService/GetFranchise"
+	FranchiseService_CreateFranchise_FullMethodName = "/FranchiseService/CreateFranchise"
+)
+
+// FranchiseServiceClient is the client API for FranchiseService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type FranchiseServiceClient interface {
+	GetFranchise(ctx context.Context, in *GetFranchiseRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error)
+	CreateFranchise(ctx context.Context, in *CreateFranchiseRequest, opts ...grpc.CallOption) (*CreateFranchiseResponse, error)
+}
+
+type franchiseServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewFranchiseServiceClient(cc grpc.ClientConnInterface) FranchiseServiceClient {
+	return &franchiseServiceClient{cc}
+}
+
+func (c *franchiseServiceClient) GetFranchise(ctx context.Context, in *GetFranchiseRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error) {
+	out := new(GetFranchiseResponse)
+	err := c.cc.Invoke(ctx, FranchiseService_GetFranchise_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *franchiseServiceClient) CreateFranchise(ctx context.Context, in *CreateFranchiseRequest, opts ...grpc.CallOption) (*CreateFranchiseResponse, error) {
+	out := new(CreateFranchiseResponse)
+	err := c.cc.Invoke(ctx, FranchiseService_CreateFranchise_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// FranchiseServiceServer is the server API for FranchiseService service.
+// All implementations must embed UnimplementedFranchiseServiceServer
+// for forward compatibility
+type FranchiseServiceServer interface {
+	GetFranchise(context.Context, *GetFranchiseRequest) (*GetFranchiseResponse, error)
+	CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error)
+	mustEmbedUnimplementedFranchiseServiceServer()
+}
+
+// UnimplementedFranchiseServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedFranchiseServiceServer struct {
+}
+
+func (UnimplementedFranchiseServiceServer) GetFranchise(context.Context, *GetFranchiseRequest) (*GetFranchiseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFranchise not implemented")
+}
+func (UnimplementedFranchiseServiceServer) CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateFranchise not implemented")
+}
+func (UnimplementedFranchiseServiceServer) mustEmbedUnimplementedFranchiseServiceServer() {}
+
+// UnsafeFranchiseServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to FranchiseServiceServer will
+// result in compilation errors.
+type UnsafeFranchiseServiceServer interface {
+	mustEmbedUnimplementedFranchiseServiceServer()
+}
+
+func RegisterFranchiseServiceServer(s grpc.ServiceRegistrar, srv FranchiseServiceServer) {
+	s.RegisterService(&FranchiseService_ServiceDesc, srv)
+}
+
+func _FranchiseService_GetFranchise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFranchiseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FranchiseServiceServer).GetFranchise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FranchiseService_GetFranchise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FranchiseServiceServer).GetFranchise(ctx, req.(*GetFranchiseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FranchiseService_CreateFranchise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateFranchiseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FranchiseServiceServer).CreateFranchise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FranchiseService_CreateFranchise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FranchiseServiceServer).CreateFranchise(ctx, req.(*CreateFranchiseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// FranchiseService_ServiceDesc is the grpc.ServiceDesc for FranchiseService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var FranchiseService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "FranchiseService",
+	HandlerType: (*FranchiseServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetFranchise",
+			Handler:    _FranchiseService_GetFranchise_Handler,
+		},
+		{
+			MethodName: "CreateFranchise",
+			Handler:    _FranchiseService_CreateFranchise_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "franchise.proto",
+}

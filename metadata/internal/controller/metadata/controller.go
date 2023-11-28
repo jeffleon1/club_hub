@@ -3,10 +3,11 @@ package metadata
 import (
 	"context"
 	"errors"
-	"fmt"
+	"time"
 
 	metadataHttp "github.com/jeffleon1/club_hub/metadata/internal/gateway/http"
 	"github.com/jeffleon1/club_hub/metadata/pkg/entities"
+	"github.com/jeffleon1/club_hub/metadata/pkg/models"
 )
 
 var ErrNotFound = errors.New("not Found")
@@ -19,20 +20,19 @@ type repository interface {
 type Controller struct {
 	repo    repository
 	gateway *metadataHttp.Gateway
+	retries int
 }
 
-func New(repo repository, gateway *metadataHttp.Gateway) *Controller {
-	return &Controller{repo, gateway}
+func New(repo repository, gateway *metadataHttp.Gateway, retries int) *Controller {
+	return &Controller{repo, gateway, retries}
 }
 
-func (c *Controller) Create(ctx context.Context, host string) error {
-	res, err := c.gateway.Get(ctx, host)
+func (c *Controller) Create(ctx context.Context, host string, franchiseID, companyID uint32) error {
+	res, err := c.getGatewayWithRetry(ctx, host)
 	if err != nil {
 		return err
 	}
-	fmt.Println(res)
-	entity := res.ToMetadata()
-	fmt.Println("entity", entity)
+	entity := res.ToMetadata(franchiseID, companyID)
 	if err = c.repo.Create(ctx, entity); err != nil {
 		return err
 	}
@@ -40,10 +40,26 @@ func (c *Controller) Create(ctx context.Context, host string) error {
 	return nil
 }
 
-func (c *Controller) Get(ctx context.Context, franchiseID uint) (*[]entities.Metadata, error) {
-	res, err := c.repo.GetBy(ctx, "franchise_id", franchiseID)
+func (c *Controller) Get(ctx context.Context, companyID uint) (*[]entities.Metadata, error) {
+	res, err := c.repo.GetBy(ctx, "company_id", companyID)
 	if err != nil {
 		return nil, err
 	}
 	return res, nil
+}
+
+func (c *Controller) getGatewayWithRetry(ctx context.Context, host string) (*models.WebDomainDetails, error) {
+	var res *models.WebDomainDetails
+	var err error
+
+	for i := 0; i < c.retries; i++ {
+		res, err = c.gateway.Get(ctx, host)
+		if err == nil && res != nil {
+			break
+		}
+
+		time.Sleep(time.Duration(i) * time.Second)
+	}
+
+	return res, err
 }

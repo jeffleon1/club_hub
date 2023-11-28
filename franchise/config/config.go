@@ -30,6 +30,7 @@ func (c *Config) ConnectionString() string {
 type Config struct {
 	APP
 	DB
+	GATEWAY
 }
 
 type DB struct {
@@ -43,5 +44,11 @@ type DB struct {
 }
 
 type APP struct {
-	PORT string `env:"APP_PORT" envDefault:"8080"`
+	PORT    string `env:"APP_PORT" envDefault:"8080"`
+	RETRIES int    `env:"APP_REQUEST_RETRIES" envDefault:"4"`
+}
+
+type GATEWAY struct {
+	PORT string `env:"GATEWAY_PORT" envDefault:"localhost"`
+	HOST string `env:"GATEWAY_HOST" envDefault:"8081"`
 }
