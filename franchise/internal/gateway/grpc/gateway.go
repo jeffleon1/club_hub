@@ -27,6 +27,7 @@ func (g *Gateway) Get(ctx context.Context, companyID uint32) ([]*entities.Metada
 		logrus.Errorf("Error establishing connection with host=%s:%s error=%s", g.host, g.port, err.Error())
 		return nil, err
 	}
+	logrus.Infof("Conection with host=%s port=%s", g.host, g.port)
 	defer conn.Close()
 	client := gen.NewMetadataServiceClient(conn)
 	logrus.Infof("Sending GetMetadata company_id=%d", companyID)

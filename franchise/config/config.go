@@ -14,7 +14,6 @@ func NewConfig() (*Config, error) {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logrus.Error("Error can't get the environment variables by file")
-		os.Exit(1)
 	}
 	if err := env.Parse(&Config); err != nil {
 		logrus.Fatalf("Error initializing: %s", err.Error())
@@ -49,6 +48,6 @@ type APP struct {
 }
 
 type GATEWAY struct {
-	PORT string `env:"GATEWAY_PORT" envDefault:"localhost"`
-	HOST string `env:"GATEWAY_HOST" envDefault:"8081"`
+	PORT string `env:"GATEWAY_FRANCHISE_PORT" envDefault:"localhost"`
+	HOST string `env:"GATEWAY_FRANCHISE_HOST" envDefault:"8081"`
 }
