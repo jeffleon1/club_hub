@@ -9,6 +9,7 @@ import (
 
 	grpcGateway "github.com/jeffleon1/club_hub/franchise/internal/gateway/grpc"
 	"github.com/jeffleon1/club_hub/franchise/pkg/entities"
+	metadataEntity "github.com/jeffleon1/club_hub/metadata/pkg/entities"
 	"github.com/likexian/whois"
 	whoisparser "github.com/likexian/whois-parser"
 	"github.com/sirupsen/logrus"
@@ -95,6 +96,30 @@ func (c *Controller) Get(ctx context.Context, companyID uint) (*entities.Respons
 	return &entities.Response{
 		Franchise: franchises,
 		Metadata:  metadatas,
+	}, nil
+}
+
+func (c *Controller) GetBy(ctx context.Context, key string, value string) (*entities.Response, error) {
+	franchises, err := c.franchiseRepo.GetBy(ctx, key, value)
+	if err != nil {
+		return nil, err
+	}
+	var franchiseMetadata []*metadataEntity.Metadata
+	for _, franchise := range *franchises {
+		metadatas, err := c.gateway.GetBy(ctx, "franchise_id", uint32(franchise.ID))
+		if err != nil {
+			return nil, err
+		}
+		franchiseMetadata = append(franchiseMetadata, metadatas...)
+	}
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &entities.Response{
+		Franchise: franchises,
+		Metadata:  franchiseMetadata,
 	}, nil
 }
 

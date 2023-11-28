@@ -48,6 +48,14 @@ func (c *Controller) Get(ctx context.Context, companyID uint) (*[]entities.Metad
 	return res, nil
 }
 
+func (c *Controller) GetBy(ctx context.Context, key string, value uint32) (*[]entities.Metadata, error) {
+	res, err := c.repo.GetBy(ctx, key, value)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
 func (c *Controller) getGatewayWithRetry(ctx context.Context, host string) (*models.WebDomainDetails, error) {
 	var res *models.WebDomainDetails
 	var err error
