@@ -51,14 +51,14 @@ func (g *Gateway) GetBy(ctx context.Context, key string, value uint32) ([]*entit
 	}
 	defer conn.Close()
 	client := gen.NewMetadataServiceClient(conn)
-	logrus.Infof("Sending GetMetadataByFilter key=%s value=%s", key, value)
+	logrus.Infof("Sending GetMetadataByFilter key=%s value=%d", key, value)
 	if err != nil {
-		logrus.Errorf("Error GetMetadata key=%s value=%s %s", key, value, err.Error())
+		logrus.Errorf("Error GetMetadata key=%s value=%d %s", key, value, err.Error())
 		return nil, err
 	}
 	resp, err := client.GetMetadataByFilter(ctx, &gen.GetMetadataByFilterRequest{Key: key, Value: value})
 	if err != nil {
-		logrus.Errorf("Error GetMetadata key=%s value=%s %s", key, value, err.Error())
+		logrus.Errorf("Error GetMetadata key=%s value=%d %s", key, value, err.Error())
 		return nil, err
 	}
 	var entityMetadata []*entities.Metadata
