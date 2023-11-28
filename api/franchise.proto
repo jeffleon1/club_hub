@@ -80,6 +80,14 @@ message GetMetadataResponse {
     repeated Metadata metadata = 1;
 }
 
+message UpdateFranchiseResponse {
+    string error = 1;
+}
+message UpdateFranchiseRequest {
+    uint32 id = 1;
+    Franchise franchise = 2;
+}
+
 service MetadataService {
     rpc GetMetadata(GetMetadataRequest) returns (GetMetadataResponse);
     rpc GetMetadataByFilter(GetMetadataByFilterRequest) returns (GetMetadataResponse);
@@ -91,4 +99,5 @@ service FranchiseService {
     rpc GetFranchise(GetFranchiseRequest) returns (GetFranchiseResponse);
     rpc GetFranchiseByFilter(GetFranchiseByFilterRequest) returns (GetFranchiseResponse);
     rpc CreateFranchise(CreateFranchiseRequest) returns (CreateFranchiseResponse);
+    rpc UpdateFranchise(UpdateFranchiseRequest) returns (UpdateFranchiseResponse);
 }

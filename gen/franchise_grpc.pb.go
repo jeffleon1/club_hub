@@ -186,6 +186,7 @@ const (
 	FranchiseService_GetFranchise_FullMethodName         = "/FranchiseService/GetFranchise"
 	FranchiseService_GetFranchiseByFilter_FullMethodName = "/FranchiseService/GetFranchiseByFilter"
 	FranchiseService_CreateFranchise_FullMethodName      = "/FranchiseService/CreateFranchise"
+	FranchiseService_UpdateFranchise_FullMethodName      = "/FranchiseService/UpdateFranchise"
 )
 
 // FranchiseServiceClient is the client API for FranchiseService service.
@@ -195,6 +196,7 @@ type FranchiseServiceClient interface {
 	GetFranchise(ctx context.Context, in *GetFranchiseRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error)
 	GetFranchiseByFilter(ctx context.Context, in *GetFranchiseByFilterRequest, opts ...grpc.CallOption) (*GetFranchiseResponse, error)
 	CreateFranchise(ctx context.Context, in *CreateFranchiseRequest, opts ...grpc.CallOption) (*CreateFranchiseResponse, error)
+	UpdateFranchise(ctx context.Context, in *UpdateFranchiseRequest, opts ...grpc.CallOption) (*UpdateFranchiseResponse, error)
 }
 
 type franchiseServiceClient struct {
@@ -232,6 +234,15 @@ func (c *franchiseServiceClient) CreateFranchise(ctx context.Context, in *Create
 	return out, nil
 }
 
+func (c *franchiseServiceClient) UpdateFranchise(ctx context.Context, in *UpdateFranchiseRequest, opts ...grpc.CallOption) (*UpdateFranchiseResponse, error) {
+	out := new(UpdateFranchiseResponse)
+	err := c.cc.Invoke(ctx, FranchiseService_UpdateFranchise_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FranchiseServiceServer is the server API for FranchiseService service.
 // All implementations must embed UnimplementedFranchiseServiceServer
 // for forward compatibility
@@ -239,6 +250,7 @@ type FranchiseServiceServer interface {
 	GetFranchise(context.Context, *GetFranchiseRequest) (*GetFranchiseResponse, error)
 	GetFranchiseByFilter(context.Context, *GetFranchiseByFilterRequest) (*GetFranchiseResponse, error)
 	CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error)
+	UpdateFranchise(context.Context, *UpdateFranchiseRequest) (*UpdateFranchiseResponse, error)
 	mustEmbedUnimplementedFranchiseServiceServer()
 }
 
@@ -254,6 +266,9 @@ func (UnimplementedFranchiseServiceServer) GetFranchiseByFilter(context.Context,
 }
 func (UnimplementedFranchiseServiceServer) CreateFranchise(context.Context, *CreateFranchiseRequest) (*CreateFranchiseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFranchise not implemented")
+}
+func (UnimplementedFranchiseServiceServer) UpdateFranchise(context.Context, *UpdateFranchiseRequest) (*UpdateFranchiseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFranchise not implemented")
 }
 func (UnimplementedFranchiseServiceServer) mustEmbedUnimplementedFranchiseServiceServer() {}
 
@@ -322,6 +337,24 @@ func _FranchiseService_CreateFranchise_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FranchiseService_UpdateFranchise_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFranchiseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FranchiseServiceServer).UpdateFranchise(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FranchiseService_UpdateFranchise_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FranchiseServiceServer).UpdateFranchise(ctx, req.(*UpdateFranchiseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FranchiseService_ServiceDesc is the grpc.ServiceDesc for FranchiseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -340,6 +373,10 @@ var FranchiseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateFranchise",
 			Handler:    _FranchiseService_CreateFranchise_Handler,
+		},
+		{
+			MethodName: "UpdateFranchise",
+			Handler:    _FranchiseService_UpdateFranchise_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

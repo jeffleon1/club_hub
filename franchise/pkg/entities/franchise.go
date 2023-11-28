@@ -74,7 +74,7 @@ func FranchiseToProto(f *Franchise, m *entities.Metadata) *gen.Franchise {
 	}
 }
 
-func MetadataFromProto(m *gen.Franchise) *Franchise {
+func FranchiseFromProto(m *gen.Franchise) *Franchise {
 	return &Franchise{
 		URL:         m.Url,
 		CreateDate:  m.CreateDate.AsTime(),
@@ -90,4 +90,39 @@ func MetadataFromProto(m *gen.Franchise) *Franchise {
 		},
 		CompanyID: uint(m.CompanyId),
 	}
+}
+
+func FranchiseFromProtoUpdate(m *gen.Franchise) *Franchise {
+	var existingFranchise Franchise
+	if m.Url != "" {
+		existingFranchise.URL = m.Url
+	}
+	if m.CreateDate != nil {
+		existingFranchise.CreateDate = m.CreateDate.AsTime()
+	}
+	if m.ExpiresDate != nil {
+		existingFranchise.ExpiresDate = m.ExpiresDate.AsTime()
+	}
+	if m.Name != "" {
+		existingFranchise.Name = m.Name
+	}
+	if m.Email != "" {
+		existingFranchise.Email = m.Email
+	}
+	if m.Location != nil {
+		if m.Location.City != "" {
+			existingFranchise.Location.City = m.Location.City
+		}
+		if m.Location.Address != "" {
+			existingFranchise.Location.Address = m.Location.Address
+		}
+		if m.Location.Country != nil && m.Location.Country.Name != "" {
+			existingFranchise.Location.Country.Name = m.Location.Country.Name
+		}
+	}
+	if m.CompanyId != 0 {
+		existingFranchise.CompanyID = uint(m.CompanyId)
+	}
+
+	return &existingFranchise
 }
