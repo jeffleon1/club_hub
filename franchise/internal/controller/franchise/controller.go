@@ -20,6 +20,7 @@ var ErrNotFound = errors.New("not Found")
 type franchiseRepository interface {
 	GetBy(ctx context.Context, key string, value interface{}) (*[]entities.Franchise, error)
 	Create(ctx context.Context, entity *entities.Franchise) error
+	Update(ctx context.Context, entity *entities.Franchise, id uint) error
 }
 
 type countryRepository interface {
@@ -81,6 +82,10 @@ func (c *Controller) Create(ctx context.Context, host string) error {
 		return err
 	}
 	return nil
+}
+
+func (c *Controller) Update(ctx context.Context, entity *entities.Franchise, id uint) error {
+	return c.franchiseRepo.Update(ctx, entity, id)
 }
 
 func (c *Controller) Get(ctx context.Context, companyID uint) (*entities.Response, error) {

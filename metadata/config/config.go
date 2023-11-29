@@ -14,7 +14,6 @@ func NewConfig() (*Config, error) {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logrus.Error("Error can't get the environment variables by file")
-		os.Exit(1)
 	}
 	if err := env.Parse(&Config); err != nil {
 		logrus.Fatalf("Error initializing: %s", err.Error())
@@ -41,7 +40,7 @@ type DB struct {
 	PORT      string `env:"DB_PORT" envDefault:"3306"`
 	SSLMODE   string `env:"DB_SSL_MODE" envDefault:"disable"`
 	TIMEZONE  string `env:"DB_TIME_ZONE"  envDefault:"America/Bogota"`
-	RELATIONS string `env:"DB_RELATIONS"  envDefault:""`
+	RELATIONS string `env:"DB_METADATA_RELATIONS"  envDefault:""`
 }
 
 type APP struct {
@@ -50,5 +49,5 @@ type APP struct {
 }
 
 type GATEWAY struct {
-	URL string `env:"GATEWAY_URL" envDefault:""`
+	URL string `env:"GATEWAY_METADATA_URL" envDefault:""`
 }

@@ -81,3 +81,14 @@ func (h *Handler) CreateFranchise(ctx context.Context, req *gen.CreateFranchiseR
 	}
 	return &gen.CreateFranchiseResponse{Error: ""}, nil
 }
+
+func (h *Handler) UpdateFranchise(ctx context.Context, req *gen.UpdateFranchiseRequest) (*gen.UpdateFranchiseResponse, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
+	}
+	entity := entityFranchise.FranchiseFromProtoUpdate(req.Franchise)
+	if err := h.ctrl.Update(ctx, entity, uint(req.Id)); err != nil {
+		return nil, status.Errorf(codes.Unavailable, err.Error())
+	}
+	return &gen.UpdateFranchiseResponse{Error: ""}, nil
+}

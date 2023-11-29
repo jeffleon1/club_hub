@@ -20,9 +20,13 @@ func New(ctrl *metadata.Controller) *Handler {
 	return &Handler{ctrl: ctrl}
 }
 
+const (
+	nilError = "nil req"
+)
+
 func (h *Handler) GetMetadata(ctx context.Context, req *gen.GetMetadataRequest) (*gen.GetMetadataResponse, error) {
 	if req == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
+		return nil, status.Errorf(codes.InvalidArgument, nilError)
 	}
 	m, err := h.ctrl.Get(ctx, uint(req.CompanyId))
 	if err != nil && errors.Is(err, metadata.ErrNotFound) {
@@ -41,7 +45,7 @@ func (h *Handler) GetMetadata(ctx context.Context, req *gen.GetMetadataRequest) 
 
 func (h *Handler) GetMetadataByFilter(ctx context.Context, req *gen.GetMetadataByFilterRequest) (*gen.GetMetadataResponse, error) {
 	if req == nil {
-		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
+		return nil, status.Errorf(codes.InvalidArgument, nilError)
 	}
 	m, err := h.ctrl.GetBy(ctx, req.Key, req.Value)
 	if err != nil && errors.Is(err, metadata.ErrNotFound) {
@@ -60,7 +64,7 @@ func (h *Handler) GetMetadataByFilter(ctx context.Context, req *gen.GetMetadataB
 
 func (h *Handler) CreateMetadata(ctx context.Context, req *gen.CreateMetadataRequest) (*gen.CreateMetadataResponse, error) {
 	if req == nil || req.Host == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "nil req or empty id")
+		return nil, status.Errorf(codes.InvalidArgument, nilError)
 	}
 	if err := h.ctrl.Create(ctx, req.Host, req.FranchiseId, req.CompanyId); err != nil {
 		return nil, status.Errorf(codes.Unavailable, err.Error())
