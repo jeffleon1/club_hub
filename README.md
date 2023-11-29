@@ -18,12 +18,11 @@ You need a machine (linux) that has Go installed > 1.19 and make, you also need 
 
 ## How to make request
 
-these are the two postman collections to test for grpc and for http
-#### GRPC Collecion: https://lunar-shuttle-128744.postman.co/workspace/Duo-Din%C3%A1mico~2274368e-001a-4d64-8bba-5f040623782d/collection/656678b1e12291959a483034?action=share&creator=15046674
-
-#### HTTP Collection: https://lunar-shuttle-128744.postman.co/workspace/Duo-Din%C3%A1mico~2274368e-001a-4d64-8bba-5f040623782d/collection/15046674-00ef5288-1089-4b72-a78e-a8a8ada6fd98?action=share&creator=15046674
+these are the two postman collections to test for [gRPC](https://lunar-shuttle-128744.postman.co/workspace/Duo-Din%C3%A1mico~2274368e-001a-4d64-8bba-5f040623782d/collection/656678b1e12291959a483034?action=share&creator=15046674) and [Http](https://lunar-shuttle-128744.postman.co/workspace/Duo-Din%C3%A1mico~2274368e-001a-4d64-8bba-5f040623782d/collection/15046674-00ef5288-1089-4b72-a78e-a8a8ada6fd98?action=share&creator=15046674)
 
 also if you have grpcurl or curl you can use it here are some examples of how to test the application
+
+### gRPC
 
 ```bash
 grpcurl -plaintext -d '{"host":"marriot.com"}' localhost:8080 FranchiseService/CreateFranchise
@@ -40,6 +39,8 @@ grpcurl -plaintext -d '{"franchise":{"name":"hilton"}, "id":1}' localhost:8080 F
 ```bash
 grpcurl -plaintext -d '{"key":"url", "value":"marriott.com"}' localhost:8080 FranchiseService/GetFranchiseByFilter
 ```
+
+### Http
 
 ```bash
 curl --location 'localhost:8090/v1/franchises' \
